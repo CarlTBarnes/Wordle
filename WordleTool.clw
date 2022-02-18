@@ -115,7 +115,7 @@ SettingsINI     EQUATE('.\Wordle_Tool_Settings.INI')
   _Wordle2300_4_Possible_ = GETINI('Config','Wordle2300_4_Possible',_Wordle2300_4_Possible_,SettingsINI)
   _Hunt_Req1_FoundLetter_ = GETINI('Config','Hunt_Req1_FoundLetter',_Hunt_Req1_FoundLetter_,SettingsINI)
   SYSTEM{PROP:PropVScroll}=1                    !Thumb proportional gives hint size of Possibles list   Carl
-  SYSTEM{PROP:MsgModeDefault}=MSGMODE:CANCOPY
+  SYSTEM{7A7Dh}=MSGMODE:CANCOPY   !c11 PROP:MsgModeDefault
   LoadWords()
   !CountDoubles()
   ScoreWords()
@@ -718,7 +718,7 @@ SetColor                        PROCEDURE(LONG Background,LONG Foreground=COLOR:
   ASSERT(SELF.StringFEQ <> 0, 'LetterKeyClass.Display StringFEQ=0')
   CASE SELF.State
     ;OF LetterState:Unknown;  SetColor(8684417                 )  !Gray
-    ;OF LetterState:Nowhere;  SetColor(3947066, COLOR:LightGray)  !Dark Gray
+    ;OF LetterState:Nowhere;  SetColor(3947066, 00E0E0E0h      )  !Dark Gray  c11 COLOR:LightGray
     ;OF LetterState:Missed ;  SetColor(3907508                 )  !Yellow
     ;OF LetterState:Correct;  SetColor(5147986                 )  !Green
   END

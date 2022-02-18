@@ -62,7 +62,7 @@ FailsNowhere                    PROCEDURE(STRING Word),BOOL              !Does w
 SettingsINI     EQUATE('.\Play_Wordle_Settings.INI')
   CODE
   SYSTEM{PROP:PropVScroll}=1                    !Thumb proportional gives hint size of Possibles list   Carl
-  SYSTEM{PROP:MsgModeDefault}=MSGMODE:CANCOPY
+  SYSTEM{7A7Dh}=MSGMODE:CANCOPY   !c11 PROP:MsgModeDefault
   LoadWords()
   LOOP TODAY() % 100 + CLOCK() % 200 TIMES ; IF RANDOM(1,WordQ_RecordsForPuzzle). ; END  !Pump randoms
   UI()
@@ -424,14 +424,15 @@ TakeSecretUnHide    PROCEDURE()
 InitWindow                    PROCEDURE
 StringFEQ   SIGNED,AUTO
 StyleNo     LONG,AUTO
+Light_Gray  EQUATE(00E0E0E0h)  !c11 COLOR:LightGray
   CODE
     LOOP StringFEQ = ?Letter:Q TO ?Letter:M
        Letters.InitControl(StringFEQ)
     END
     ?HistoryList{PROPLIST:DefHdrBackColor} = 3947066
-    ?HistoryList{PROPLIST:DefHdrTextColor} = COLOR:LightGray
+    ?HistoryList{PROPLIST:DefHdrTextColor} = Light_Gray
     ?HistoryList{PropStyle:BackColor, LetterState:Nowhere} = 3947066        !Dark Gray
-    ?HistoryList{PropStyle:TextColor, LetterState:Nowhere} = COLOR:LightGray
+    ?HistoryList{PropStyle:TextColor, LetterState:Nowhere} = Light_Gray
     ?HistoryList{PropStyle:BackColor, LetterState:Missed}  = 3907508        !Yellow
     ?HistoryList{PropStyle:TextColor, LetterState:Missed}  = COLOR:White
     ?HistoryList{PropStyle:BackColor, LetterState:Correct} = 5147986        !Green
@@ -533,7 +534,7 @@ SetColor                        PROCEDURE(LONG Background,LONG Foreground=COLOR:
   ASSERT(SELF.StringFEQ <> 0, 'LetterKeyClass.Display StringFEQ=0')
   CASE SELF.State
     ;OF LetterState:Unknown;  SetColor(8684417                 )  !Gray
-    ;OF LetterState:Nowhere;  SetColor(3947066, COLOR:LightGray)  !Dark Gray
+    ;OF LetterState:Nowhere;  SetColor(3947066, 00E0E0E0h      )  !Dark Gray  c11 COLOR:LightGray
     ;OF LetterState:Missed ;  SetColor(3907508                 )  !Yellow
     ;OF LetterState:Correct;  SetColor(5147986                 )  !Green
   END
