@@ -18,7 +18,7 @@ I also changed the scoring and display the word score in the list. More details 
 
 To use this tool fill in the Correct Green letters in the Green boxes.
  Fill in the Yellow letters in the Yellow boxes then check the boxes for the positions 1-5 that missed.
- For any gray letters that are not in the word you must click then in the keyboard at the bottom of the window.
+ For any gray letters that are not in the word you must click them in the keyboard at the bottom of the window.
 
 ![tool 1](images/tool1.png)
 
@@ -32,9 +32,11 @@ The online Wordle game only allows a single puzzle per day.
 
 ![play 1](images/play1.png)
 
-My game has a few differences from the online that help develop the tool code:
+My game has a few differences from the online version:
 
- * You can unhide the Puzzle Secret Word
- * You can override the Secret Word to allow repeating games
- * You can undo a guess by selecting it and pressing the Delete key
- * [...] button shows list of suggested starting words like: SOARE AROSE ARISE SLICE
+ * Unhide the puzzle Secret Word
+ * Override the Secret Word (unhide first). Allows repeating games or testing certain words and letters.
+ * Guess nonsense non-dictionary words by clicking Ignore on warning message e.g. BYANY
+ * No limit of 6 guesses
+ * Undo a guess by selecting it then pressing the Delete key
+ * [...] button shows list of suggested first words like: SOARE AROSE ARISE SLICE
