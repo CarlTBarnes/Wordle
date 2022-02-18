@@ -28,7 +28,7 @@ _Score_S_               LONG            !S Score so can deduct if 'S' in last po
 _Wordle2300_LoadOnly_   EQUATE(0)       !Wordle uses about 2316 words for Secret word. Limit Load to these makes really easy. Can also examine letter scoring.
 _Wordle2300_4_LetterScore_ BYTE(0)      !Letter scoring uses wordle 2300 even thought all 13,000 words are loaded
 _Wordle2300_4_Possible_ BYTE(0)         !Limit Possilbe to Wordle 2300 only, probably makes it too easy
-_UpLow_Possible_        BYTE(1)         !In Possible word show found letters UPPER
+_UpLow_Possible_        BYTE(0)         !In Possible word show found letters UPPER
 _UpLow_Hunter_          BYTE(1)         !In Hunt words show found letters UPPER
 _Hunt_Req1_FoundLetter_ BYTE(0)         !Hunt Count will be >= 1, some think its a cheat to try 5 new letters
 
