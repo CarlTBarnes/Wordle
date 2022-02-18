@@ -1,13 +1,12 @@
 # Wordle
 
-[Wikipedia ASCII 85 article](https://en.wikipedia.org/wiki/Ascii85)
-[name](https)
-
 Wordle Game and Wordle Tool to help solve.
 
 If you are not familiar with the 
 [online Wordle game](https://www.nytimes.com/games/wordle)
  you can read about [Wordle on Wikipedia](https://en.wikipedia.org/wiki/Wordle).
+
+## Wordle Tool
 
 Mike Hanson created a Wordle Tool to help solve the puzzle by suggesting words. 
 He presented it on [ClarionLive 565](https://www.youtube.com/watch?v=K4lThuFXeAw)
@@ -21,9 +20,9 @@ To use this tool fill in the Correct Green letters in the Green boxes.
  Fill in the Yellow letters in the Yellow boxes then check the boxes for the positions 1-5 that missed.
  For any gray letters that are not in the word you must click then in the keyboard at the bottom of the window.
 
-![tool 1](images\tool1.png)
+![tool 1](images/tool1.png)
 
-![tool 2](images\tool2.png)
+![tool 2](images/tool2.png)
  
 ## Wordle Game
 
@@ -31,7 +30,7 @@ The online Wordle game only allows a single puzzle per day.
  That made it hard to work on the tool code so I created my own version of the Wordle game written in Clarion.
  Mike's tool code provided many of the elements I needed.
 
-![play 1](images\play1.png)
+![play 1](images/play1.png)
 
 My game has a few differences from the online that help develop the tool code:
 
