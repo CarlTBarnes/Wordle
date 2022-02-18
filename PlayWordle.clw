@@ -119,9 +119,9 @@ Style              LONG
                 END
               END
 
-Window WINDOW('Wordle Game'),AT(,,290,146),CENTER,GRAY,SYSTEM,ICON('PlayWordle48.ico'),FONT('Segoe UI',14,COLOR:White), |
+Window WINDOW('Wordle Game'),AT(,,287,146),CENTER,GRAY,SYSTEM,ICON('PlayWordle48.ico'),FONT('Segoe UI',14,COLOR:White), |
             COLOR(COLOR:Black),RESIZE
-        PROMPT('Secret:'),AT(4,4),USE(?Secret:Prompt),TRN
+        PROMPT('Secret:'),AT(4,4),USE(?Secrt:Prompt),TRN
         CHECK('Sho&w / Change'),AT(80,6),USE(UnHideSecret),SKIP,TRN,FONT(,10),TIP('Show the Secret word<13,10>and allow ' & |
                 'changing the word')
         ENTRY(@s5),AT(35,4,38),USE(SecretWord),SKIP,FLAT,FONT(,,,FONT:bold),TIP('Secret Word'),UPR,PASSWORD,READONLY, |
@@ -179,10 +179,10 @@ Window WINDOW('Wordle Game'),AT(,,290,146),CENTER,GRAY,SYSTEM,ICON('PlayWordle48
         BUTTON('&New Game'),AT(4,129,37,12),USE(?NewGameBtn),SKIP,FONT(,10),TIP('New Game'),TRN
         BUTTON('&Run Again'),AT(45,129,36,12),USE(?RunAgainBtn),SKIP,FONT(,10),TIP('Run another instance of Play Worlde'),TRN
         BUTTON('Run &Tool'),AT(86,129,36,12),USE(?RunSolverBtn),SKIP,FONT(,10),TIP('Open Worlde Solver Tool'),TRN
-        LIST,AT(131,4,104,134),USE(?HistoryList),FLAT,NOBAR,VSCROLL,TIP('Guess History<13,10>Press Delete key to remove guess'), |
+        LIST,AT(131,4,104,137),USE(?HistoryList),FLAT,NOBAR,VSCROLL,TIP('Guess History<13,10>Press Delete key to remove guess'), |
                 FROM(HistoryQ),FORMAT('14C(0)|~#~C(0)@s2@10C|Y~1~@s1@10C|Y~2~@s1@10C|Y~3~@s1@10C|Y~4~@s1@10C|Y~5~@s1@10L' & |
                 '(2)~Guess~@s5@'),ALRT(DeleteKey)
-        LIST,AT(241,4,40,134),USE(?WordsList),FLAT,NOBAR,VSCROLL,TIP('Puzzle WordQ<13,10>2300 puzzle words end at ----' & |
+        LIST,AT(241,4,40,137),USE(?WordsList),FLAT,NOBAR,VSCROLL,TIP('Puzzle WordQ<13,10>2300 puzzle words end at ----' & |
                 '<13,10>Double Click to selected Guess word'),FROM(WordQ),FORMAT('24L(2)|M@S5@')
     END
 !WndPrvCls   CBWndPreviewClass
@@ -394,7 +394,7 @@ PosMissed   BYTE,AUTO
     ADD(HistoryQ)
     IF GuessWord = SecretWord THEN ?SecretWord{PROP:Password}=0. !Solved it so Unhide Secret
     DISPLAY
-    RETURN
+    RETURN    
 !------------------------------------------
 TakeSecret                      PROCEDURE()
     CODE
