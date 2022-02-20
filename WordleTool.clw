@@ -1037,26 +1037,24 @@ ViewQueue_WordQ PROCEDURE()
 !    using the "Queue to Format" tab the "Window + List" button - https://github.com/CarlTBarnes/List-Format-Parser 
 
 QNdx        LONG
-SortWord    BYTE(0)
-SortDups    BYTE(0)
-Dup_0       BYTE(1)
-Dup_1       BYTE(1)
-W2300_0     BYTE(1)
-W2300_1     BYTE(1)
-LoadedOnce  BOOL
-WordZ       WordQ
+SortHow     BYTE
+FilterDups  BYTE
+Filter2300  BYTE
+WordZ       QUEUE(WordQ)
+Ltr1            STRING(1)
+Ltr5            STRING(1)
+            END
+SelectWord  STRING(WORD_LENGTH),AUTO
        
-ListWindow WINDOW('WordQ'),AT(,,148,224),GRAY,SYSTEM,ICON('WordleTool48.ico'),STATUS,FONT('Segoe UI',10),RESIZE
-        CHECK('Word Sort'),AT(4,1),USE(SortWord),SKIP,FONT(,8),TIP('Check to sort by Word<13,10>Uncheck to sort by Score')
-        CHECK('Dups Sort'),AT(4,9),USE(SortDups),SKIP,FONT(,8),TIP('Check to sort by Dup Letter Count')
-        CHECK('Dups No'),AT(62,1),USE(Dup_0),SKIP,FONT(,8),TIP('Dups = 0 <13,10>Word does NOT have duplicate letters')
-        CHECK('Dups Yes'),AT(62,9),USE(Dup_1),SKIP,FONT(,8),TIP('Dups >= 1 <13,10>Word DOES have duplicate letters<13>' & |
-                '<10>These are left out of some lists.')
-        CHECK('2300 No'),AT(106,1),USE(W2300_0),SKIP,FONT(,8),TIP('Wordle 2300=0<13,10>Word is NOT used for puzzle secr' & |
-                'et word')
-        CHECK('2300 Yes'),AT(106,9),USE(W2300_1),SKIP,FONT(,8),TIP('Wordle 2300=1<13,10>Word IS used for puzzle secret word')
-        LIST,AT(4,21,138),FULL,USE(?LIST:WordZ),VSCROLL,VCR,FROM(WordZ),FORMAT('36L(2)|FM~Word~C(0)@s5@?30R(2)|FM~Score~' & |
-                'C(0)@n_5@30C|M~Dup <13,10>Letters~@n1b@30C|M~Wordle<13,10>2300~@n1b@') !,FONT('Consolas')
+ListWindow WINDOW('WordQ'),AT(,,148,228),GRAY,SYSTEM,ICON('WordleTool48.ico'),STATUS,FONT('Segoe UI',10),RESIZE
+        LIST,AT(4,3,56,10),USE(SortHow),SKIP,FONT(,8),DROP(9),FROM('Sort by Score|#0|Sort by Word|#1|Sort by Dups|#2|Ltr' & |
+                ' 1 + Score|#3|Ltr 5 + Score|#4'),FORMAT('20L(2)')
+        LIST,AT(63,3,38,10),USE(FilterDups),SKIP,FONT(,8),TIP('Filter list to show only words with/without Duplicate Letters'), |
+                DROP(9,54),FROM('All Dups Yes+No|#0|Yes Dup Letters|#1|No Dup Letters|#2'),FORMAT('20L(2)')
+        LIST,AT(104,3,38,10),USE(Filter2300),SKIP,FONT(,8),TIP('Show only (or not) the 2300 words<13,10>used for Wordle ' & |
+                'game secret words'),DROP(9,60),FROM('All 13k Words|#0|2300 Game Words|#1|Not 2300 Words|#2'),FORMAT('20L(2)')
+        LIST,AT(4,16,138),FULL,USE(?LIST:WordZ),VSCROLL,VCR,FROM(WordZ),FORMAT('36L(2)|FM~Word~C(0)@s5@?30R(2)|FM~Score~' & |
+                'C(0)@n_5@30C|M~Dup <13,10>Letters~@n1b@30C|M~Wordle<13,10>2300~@n1b@')
     END
     
     CODE
@@ -1065,40 +1063,59 @@ ListWindow WINDOW('WordQ'),AT(,,148,224),GRAY,SYSTEM,ICON('WordleTool48.ico'),ST
     0{PROP:MaxWidth}  = 0{PROP:Width}
     ACCEPT 
       CASE EVENT()
-      OF EVENT:OpenWindow   ; DO LoadWordZRtn ; LoadedOnce=True
+      OF EVENT:OpenWindow   ; DO LoadWordZRtn
       END
       CASE ACCEPTED()
-      OF ?Dup_0 TO ?W2300_1  ; DO LoadWordZRtn
-      OF ?SortWord ; IF SortWord THEN SortDups=0. ; DO SortRtn ; SELECT(?LIST:WordZ,1)
-      OF ?SortDups ; IF SortDups THEN SortWord=0. ; DO SortRtn ; SELECT(?LIST:WordZ,1)
+      OF   ?FilterDups 
+      OROF ?Filter2300
+            DO Select1Rtn
+            DO LoadWordZRtn
+            DO Select2Rtn
+      OF ?SortHow
+            DO Select1Rtn
+            DO SortRtn 
+            DO Select2Rtn
       END
     END !ACCEPT
     CLOSE(ListWindow)
+
+Select1Rtn ROUTINE
+    GET(WordZ,CHOICE(?LIST:WordZ)) 
+    SelectWord = CHOOSE(~ERRORCODE(),WordZ.Word,'')
+Select2Rtn ROUTINE
+    WordZ.Word = SelectWord 
+    GET(WordZ,WordZ.Word)
+    SELECT(?LIST:WordZ,CHOOSE(~ERRORCODE(),POINTER(WordZ),1))
+    EXIT
     
 LoadWordZRtn ROUTINE
     FREE(WordZ)
-    LOOP QNdx=1 TO RECORDS(WordQ)  ! TO 1 BY -1
+    LOOP QNdx=1 TO RECORDS(WordQ)
        GET(WordQ,QNdx)
-       IF ~Dup_0   AND WordQ.DupLetters = 0 THEN CYCLE.
-       IF ~Dup_1   AND WordQ.DupLetters > 0 THEN CYCLE.
-       IF ~W2300_0 AND WordQ.Secret2300 = 0 THEN CYCLE.
-       IF ~W2300_1 AND WordQ.Secret2300 > 0 THEN CYCLE.
-       
+       CASE FilterDups
+       OF 1 ; IF WordQ.DupLetters = 0 THEN CYCLE.
+       OF 2 ; IF WordQ.DupLetters > 0 THEN CYCLE.
+       END
+       CASE Filter2300
+       OF 1 ; IF WordQ.Secret2300 = 0 THEN CYCLE.
+       OF 2 ; IF WordQ.Secret2300 > 0 THEN CYCLE.
+       END       
        WordZ = WordQ
+       WordZ.Ltr1 = WordQ.Word[1]
+       WordZ.Ltr5 = WordQ.Word[5]
        ADD(WordZ)
     END
     0{PROP:StatusText}='Showing '& RECORDS(WordZ) &' of '& RECORDS(WordQ) & ' words'
-    IF SortWord + SortDups THEN DO SortRtn.
+    IF SortHow > 0 THEN DO SortRtn.
     DISPLAY
     EXIT
 
 SortRtn ROUTINE
-    GET(WordZ,CHOICE(?LIST:WordZ))
-    IF SortWord THEN
-        SORT(WordZ,WordZ.Word)
-    ELSIF SortDups THEN
-        SORT(WordZ,-WordZ.DupLetters,WordZ.Word)
-    ELSE
-        SORT(WordZ,WordZ.Score,WordZ.Word)
+    CASE SortHow
+    OF 0 ; SORT(WordZ,-WordZ.Score,WordZ.Word)
+    OF 1 ; SORT(WordZ,WordZ.Word)
+    OF 2 ; SORT(WordZ,-WordZ.DupLetters,WordZ.Word)
+    OF 3 ; SORT(WordZ,WordZ.Ltr1,-WordZ.Score,WordZ.Word)   !Nailing the 1st Letter helps a lot
+    OF 4 ; SORT(WordZ,WordZ.Ltr5,-WordZ.Score,WordZ.Word)   !1st + Last makes it easy to guess them middle 3
     END
     EXIT
