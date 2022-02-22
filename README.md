@@ -22,11 +22,12 @@ In this Repo you will find my modified version of Mike's Wordle tool.
 
 To use this tool fill in the Correct Green letters in the Green entry boxes.
  Fill in the Yellow letters in the Yellow entry boxes then tick the check boxes for the positions 1-5 that missed.
- For any gray letters that are not in the word you must click them in the keyboard at the bottom of the window.
+ For any Gray letters that are not in the word you must click them in the keyboard at the bottom of the window.
 
 ![tool 1](images/tool1.png)
 
-In the Wordle game above the guess "AROSE" scores "R,O" as Yellow and "A,S,E" as Gray. In the Tool you enter the "R,O" into the Yellow entries and check boxes 2 and 3 to identify the position of the miss.
+In the Wordle game above the guess "AROSE" scores "R,O" as Yellow and "A,S,E" as Gray.
+ In the Tool you enter the "R,O" into the Yellow entries and check boxes 2 and 3 to identify the position of the miss.
  For incorrect letters "A,S,E" you must click in the bottom keyboard to note those as Gray.
  The Tool then calculates the two word lists and scores.
 
@@ -43,11 +44,15 @@ On the far right of the Tool window the "New Letter Words" list has words that c
 
  This narrows the possible list down to 3 with ROBIN being the word I guess and it is the correct answer.
 
+ (_Note some consider it cheating to guess 5 new letters, you can tick the "1" box at the top-right of the list to require at least 1 found letter. It would be best if that was a Yellow letter so you take a shot at finding its correct position. The found letters show in upper case as seen in the word "`chImp`" below._)
+
 ![tool 2](images/tool2.png)
 
 If the 3 words possible (PORIN ROBIN RONIN) were all good choices you could use the Run button to start a new instance of the Tool.
  In that you could enter in the Yellow boxes the letters not in common of those words: P,R,B.
- That would provide a list of words so that with one more guess PROBE you could find the last 2 letters in the secret word; otherwise, it may take 3 guesses. Many times you will have 5+ words like: STILL SHILL SPILL SKILL SWILL.
+ That would provide a list of words so that with one more guess PROBE you could find the last 2 letters in the secret word; otherwise, it may take 3 guesses.
+ In this case if a guess of ROBIN failed that would identify if "R" was in position 1 (making RONIN with word else it must be PORIN) so you could always solve this example in 2 guesses.
+ Many times you will have 5+ words (e.g. STILL SHILL SPILL SKILL SWILL) that are more suited to this strategy.
 
 ![tool 3](images/tool3.png)
 
